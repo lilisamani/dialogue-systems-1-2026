@@ -122,66 +122,66 @@ const dmMachine = setup({
       on: { ASRTTS_READY: "WaitToStart" },
     },
     WaitToStart: {
-      on: { CLICK: "Query_who" },
+      on: { CLICK: "WaitForHi" },
     },
-    // WaitForHi: {
-    //   initial: "Ask",
-    //   on: {
-    //     LISTEN_COMPLETE: [
-    //       {
-    //         target: "Query_who",
-    //         guard: ({ context }) => !!context.last_answer && isInGrammar(context.last_answer![0].utterance) && getGreeting(context.last_answer![0].utterance) !== undefined,
-    //       },
-    //       {
-    //         target: ".InvalidInput",
-    //         guard: ({ context }) => !!context.last_answer,
-    //       },
-    //       { target: ".NoInput" },
-    //     ],
-    //   },
-    //   states: {
-    //     NoInput: {
-    //       entry: {
-    //         type: "spst.speak",
-    //         params: { utterance: `I can't hear you!` },
-    //       },
-    //       on: { SPEAK_COMPLETE: "Ask" },
-    //     },
-    //     Ask: {
-    //       entry: { type: "spst.listen" },
-    //       on: {
-    //         RECOGNISED: {
-    //           actions: assign(({ event }) => {
-    //             return { last_answer: event.value };
-    //           }),
-    //         },
-    //         ASR_NOINPUT: {
-    //           actions: assign({ last_answer: null }),
-    //         },
-    //       },
-    //     },
-    //     InvalidInput: {
-    //       entry: {
-    //         type: "spst.speak",
-    //         params: ({ context }) => ({
-    //           utterance: `You just said: ${context.last_answer![0].utterance}, but I am waiting for a greeting. Please say hi or hello to start!`,
-    //         }),
-    //       },
-    //       on: { SPEAK_COMPLETE: "Ask" },
-    //     },
-    //   },
-    // },
-    // Start: {
-    //   initial: "Prompt",
-    //   on: {
-    //     SPEAK_COMPLETE: "Query_who",
-    //   },
-    //   states: {
-    //     Prompt: {
-    //       entry: { type: "spst.speak", params: { utterance: `Let's create an appointment.` } },
-    //     },
-    //   },
-    // },
+    WaitForHi: {
+      initial: "Ask",
+      on: {
+        LISTEN_COMPLETE: [
+          {
+            target: "Start_booking",
+            guard: ({ context }) => !!context.last_answer && isInGrammar(context.last_answer![0].utterance) && getGreeting(context.last_answer![0].utterance) !== undefined,
+          },
+          {
+            target: ".InvalidInput",
+            guard: ({ context }) => !!context.last_answer,
+          },
+          { target: ".NoInput" },
+        ],
+      },
+      states: {
+        NoInput: {
+          entry: {
+            type: "spst.speak",
+            params: { utterance: `I can't hear you!` },
+          },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+        Ask: {
+          entry: { type: "spst.listen" },
+          on: {
+            RECOGNISED: {
+              actions: assign(({ event }) => {
+                return { last_answer: event.value };
+              }),
+            },
+            ASR_NOINPUT: {
+              actions: assign({ last_answer: null }),
+            },
+          },
+        },
+        InvalidInput: {
+          entry: {
+            type: "spst.speak",
+            params: ({ context }) => ({
+              utterance: `You just said: ${context.last_answer![0].utterance}, but I am waiting for a greeting. Please say hi or hello to start!`,
+            }),
+          },
+          on: { SPEAK_COMPLETE: "Ask" },
+        },
+      },
+    },
+    Start_booking: {
+      initial: "Prompt",
+      on: {
+        SPEAK_COMPLETE: "Query_who",
+      },
+      states: {
+        Prompt: {
+          entry: { type: "spst.speak", params: { utterance: `Let's create an appointment.` } },
+        },
+      },
+    },
     Query_who: {
       initial: "Prompt",
       on: {
@@ -519,7 +519,7 @@ const dmMachine = setup({
         type: "spst.speak", params: { utterance: `Your appointment has been created!.`, },
       },
       on: {
-        CLICK: "Query_who",
+        CLICK: "WaitForHi",
       },
     },
   },
