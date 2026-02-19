@@ -1,6 +1,6 @@
 
 # Lab IV. Natural language understanding
-================
+
 |:warning:|
 *Before you proceed*: update speechstate to the latest version!
 #+begin_src sh
