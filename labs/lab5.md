@@ -1,10 +1,18 @@
 
-# Lab IV. Natural language understanding
+# Lab 5 | Natural language understanding
 
-|:warning:|
-*Before you proceed*: update speechstate to the latest version!
+*Before you proceed*: pull the changes to your fork and update packages to the latest version in the correct directory (labs/lab5/Code):
 #+begin_src sh
-  yarn up speechstate
+npm install
+#+end_src
+
+If something is broken/corrupted try removing all the packages and re-install:
+#+begin_src sh
+rm -rf node_modules package-lock.json
+npm install
+npm install xstate
+npm install speechstate@latest
+npm install @statelyai/inspect
 #+end_src
 
 ## Introduction & Preparation
@@ -12,7 +20,7 @@ In this lab, we are going to build on what you have already built on lab3 (or ra
 Remember that in the Lab 3, our machine expected very specific utterances. And we had to write EVERY word we would use in our Grammar object which was tedious. But real language have tens of thousands of words and it is unreasonable to construct a grammar that large!
 With NLU, we will be able add two more objects instead of Grammars: Intents and Entities. They are arrays that Azure will expect and those arrays will guide our machine to understand a given utterance with the confidence scores.
 
-As I said, this will be on top of your lab 3 assignment, so it is a good idea to copy your dm.ts on top of it and start making changes from there.
+As it is stated before, this will be on top of your lab 3 assignment, so it is a good idea to copy your dm.ts on top of it and start making changes from there.
 
 However types.ts will expect additional type declarations. Remember that we said we will add two more objects: Intent and Entity. And also remember that TypeScript requires explicit type declarations for its expected objects. 
 
@@ -63,7 +71,7 @@ Now NLUObject (which contains our Intent and Entity types) are inside our DMCont
 
 
 ## Task 1: Integrate a statistical NLU in your dialogue system
-In Lab 2 (basic dialogue management), you used a simplistic mapping
+In Lab 3 (basic dialogue management), you used a simplistic mapping
 (called *grammar* in the code) from user utterances to entities. In the
 first task of this lab, you will replace this grammar with a
 statistical NLU trained and deployed using Conversational Language
@@ -202,6 +210,10 @@ Finally, you need to rewire the logic in your code to support
 entities. For "who is X" path, in response to user's query you will
 need to provide some basic information about the person (i.e. a
 celebrity).
+
+### 6) Testing Deployments
+
+Test your deployments. It is very helpful for debugging. It will help you understand if any error is on Azure's side or your Typescript project's side. If everything seems fine on `Testing deployments` section in the web interface, it is likely that your files on lab5 directory needs adjustment.
 
 ## Submit:
 Export your NLU project by choosing “Projects” in the navigation menu
